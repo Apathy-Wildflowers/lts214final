@@ -1,6 +1,7 @@
 ---
 title: "paper"
 format: html
+editor: visual
 ---
 
 ### Background
@@ -66,19 +67,19 @@ This loads tidyverse functions, moving-average function, stores all 4 stream dat
 ```{r}
 library(tidyverse)
 print("start")
-source("R/moving-average.R")
+source("../R/moving-average.R")
 
 BQ1 <- read_csv(
-  "data/QuebradaCuenca1-Bisley.csv",
+  "../data/QuebradaCuenca1-Bisley.csv",
   na = c("", "NA", "ND"))
 BQ2 <- read_csv(
-  "data/QuebradaCuenca2-Bisley.csv",
+  "../data/QuebradaCuenca2-Bisley.csv",
   na = c("", "NA", "ND"))
 BQ3 <- read_csv(
-  "data/QuebradaCuenca3-Bisley.csv",
+  "../data/QuebradaCuenca3-Bisley.csv",
   na = c("", "NA", "ND"))
 PRM <- read_csv(
-  "data/RioMameyesPuenteRoto.csv",
+  "../data/RioMameyesPuenteRoto.csv",
   na = c("", "NA", "ND"))
 print("end")
 
@@ -91,3 +92,4 @@ PRM_Avg <- moving_average(PRM)
 ```
 
 ### Results
+
