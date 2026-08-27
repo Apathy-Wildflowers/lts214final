@@ -69,6 +69,7 @@ library(tidyverse)
 print("start")
 source("../R/moving-average.R")
 
+print("step 2")
 BQ1 <- read_csv(
   "../data/QuebradaCuenca1-Bisley.csv",
   na = c("", "NA", "ND"))

@@ -11,7 +11,8 @@ moving_average <- function(DataSet) {
     mg_mgl = NA,
     no3n_mgl = NA,
     ca_mgl = NA,
-    nh4n_mgl = NA
+    nh4n_mgl = NA,
+    Site_ID = NA
     # Fill in the rest of the ions
   )
 
