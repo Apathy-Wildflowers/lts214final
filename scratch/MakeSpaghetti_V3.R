@@ -47,36 +47,26 @@ BQ3_Avg <- BQ3_Avg |>
 PRM_Avg <- PRM_Avg |> 
   mutate(Sample_ID = as.factor(Sample_ID))
 
-
 distinct(BQ1_Avg, Sample_ID) #Checkup
 class(BQ1_Avg$Sample_ID) #Checkup
 
 #Combine data
 Final_Data <- rbind(BQ1_Avg, BQ2_Avg, BQ3_Avg, PRM_Avg)
-glimpse(Final_Data)
 
-
-
+glimpse(Final_Data) # Checkup
+distinct(Final_Data, Sample_ID) #Checkup
 
 #Combine K,`NO3-N`, Mg, Ca, and `NH4-N` into single column called "Ion"
 
-BQ1 <- BQ1 |>
+Final_Data <- Final_Data |>
   pivot_longer(
     cols = c(K, `NO3-N`, Mg, Ca, `NH4-N`),
     names_to = "Ion",
     values_to = "Concentration"
   )
 
-# Turns "Ion" into a usable thing as site
-# After running these lines, should turn into "factor"
-class(BQ1$Ion)
-BQ1 <- BQ1 |> 
-  mutate(Ion = as.factor(Ion))
-distinct(BQ1, Ion)
-glimpse(BQ1)
-# 
 
-#I want a moving average of `NO3-N` by Sample_Date
+# ggplot yeah creation
 
 ggplot(
   data = BQ1_Avg,
@@ -87,9 +77,3 @@ ggplot(
 ) +
   geom_point() +
   geom_line()
-
-#For BQ_2, Combine K and `NO3-N` into single column called "Chemical"
-
-BQ2_Filter <- BQ2 |> 
-  select(Sample_Date,`NO3-N`,K)
-glimpse(BQ2_Filter)
