@@ -1,0 +1,93 @@
+---
+title: "paper"
+format: html
+---
+
+### Background
+
+This project recreates a graph that shows chemical concentrations before and after Hurricane Hugo in 4 streams in Bisley, Puerto Rico.
+More specifically, it recreates Figure 3. from "Effects of Hurricane Disturbance on Stream Water Concentrations and Fluxes in Eight Tropical Forest Watersheds of the Luquillo Experimental Forest, Puerto Rico" by Douglas A. Schaefer, William H. McDowell, Fredrick N. Scatena and Clyde E. Asbury (2000) [https://doi.org/10.1017/s0266467400001358]
+
+### Data
+
+Data is taken from the Environmental Data Initiative [https://portal.edirepository.org/nis/mapbrowse?packageid=knb-lter-luq.20.4923064]
+
+### Methods
+
+This creates the function moving-average.R, which takes the 9 week moving averages of the ion concentrations from the stream data. This is placed inside the "R" folder that defines functions.
+```{R}
+library(tidyverse)
+moving_average <- function(DataSet) {
+  # Initialize a tibble to contain the results
+  result <- tibble (
+    window_start = seq(ymd(DataSet$Sample_Date[1]), ymd(DataSet$Sample_Date[nrow(DataSet)]),  by = "9 weeks"),
+    k_mgl = NA,
+    mg_mgl = NA,
+    no3n_mgl = NA,
+    ca_mgl = NA,
+    nh4n_mgl = NA
+    # Fill in the rest of the ions
+  )
+
+  # Fill in the iterator and sequence
+  for (i in 1:nrow(result)) {
+    # Create variables for the start and end of the current window
+    w1 <- result$window_start[i]
+    w2 <- w1 + weeks(9)
+
+    # Create a logical vector, called "in_window", that says which samples are inside the window
+    # Hint: you'll compare sample dates to the start and end of the window
+    in_window <- DataSet$Sample_Date[DataSet$Sample_Date >= w1 &
+      DataSet$Sample_Date < w2]
+
+    # Use indexing to pull out the ion concentrations that fall inside the window
+    k_window <- DataSet$k[DataSet$Sample_Date >= w1 & DataSet$Sample_Date < w2]
+    no3n_window <- DataSet$`NO3-N`[DataSet$Sample_Date >= w1 & DataSet$Sample_Date < w2]
+    mg_window <- DataSet$Mg[DataSet$Sample_Date >= w1 & DataSet$Sample_Date < w2]
+    ca_window <- DataSet$Ca[DataSet$Sample_Date >= w1 & DataSet$Sample_Date < w2]
+    nh4n_window <- DataSet$`NH4-N`[DataSet$Sample_Date >= w1 & DataSet$Sample_Date < w2]
+
+    # The line above gets potassium in the window. Get the rest of the ions too
+
+    # Calculate the mean of each ion concentration and fill in the result
+    result$k_mgl[i] <- mean(k_window, na.rm = TRUE)
+    result$no3n_mgl[i] <- mean(no3n_window, na.rm = TRUE)
+    result$mg_mgl[i] <- mean(mg_window, na.rm = TRUE)
+    result$ca_mgl[i] <- mean(ca_window, na.rm = TRUE)
+    result$nh4n_mgl[i] <- mean(nh4n_window, na.rm = TRUE)
+  }
+  return(result)
+  # Return the result
+}
+```
+
+
+This loads tidyverse functions, moving-average function, stores all 4 stream data into variables, and then turns the data all into moving averages.
+```{r}
+library(tidyverse)
+print("start")
+source("R/moving-average.R")
+
+BQ1 <- read_csv(
+  "data/QuebradaCuenca1-Bisley.csv",
+  na = c("", "NA", "ND"))
+BQ2 <- read_csv(
+  "data/QuebradaCuenca2-Bisley.csv",
+  na = c("", "NA", "ND"))
+BQ3 <- read_csv(
+  "data/QuebradaCuenca3-Bisley.csv",
+  na = c("", "NA", "ND"))
+PRM <- read_csv(
+  "data/RioMameyesPuenteRoto.csv",
+  na = c("", "NA", "ND"))
+print("end")
+
+BQ1_Avg <- moving_average(BQ1)
+BQ2_Avg <- moving_average(BQ2)
+BQ3_Avg <- moving_average(BQ3)
+PRM_Avg <- moving_average(PRM)
+
+
+```
+
+### Results
