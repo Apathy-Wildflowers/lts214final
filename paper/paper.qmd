@@ -20,36 +20,17 @@ This is placed inside the "R" folder that defines functions.
 
 This loads tidyverse functions, moving-average function, stores all 4 stream data into variables, and then turns the data all into moving averages.
 ```{r}
+#| output: false
 library(tidyverse)
-print("start")
-source("../R/moving-average.R")
-source("../1_clean_data.R")
-
-print("step 2")
-BQ1 <- read_csv(
-  "../data/QuebradaCuenca1-Bisley.csv",
-  na = c("", "NA", "ND"))
-BQ2 <- read_csv(
-  "../data/QuebradaCuenca2-Bisley.csv",
-  na = c("", "NA", "ND"))
-BQ3 <- read_csv(
-  "../data/QuebradaCuenca3-Bisley.csv",
-  na = c("", "NA", "ND"))
-PRM <- read_csv(
-  "../data/RioMameyesPuenteRoto.csv",
-  na = c("", "NA", "ND"))
-print("end")
-
-BQ1_Avg <- moving_average(BQ1)
-BQ2_Avg <- moving_average(BQ2)
-BQ3_Avg <- moving_average(BQ3)
-PRM_Avg <- moving_average(PRM)
+Final_Data <- read_csv("../output/clean_data.csv")
 ```
+
 
 ### Results
 #### ggplot creation
-
 ```{r}
+#| echo: false
+#| warning: false
 ggplot(
   data = Final_Data,
   mapping = aes(
@@ -60,7 +41,9 @@ ggplot(
   )
 ) + 
   geom_line() +
-  facet_wrap("Ion", scales = "free", ncol = 1, strip.position = "left")
+  facet_wrap("Ion", scales = "free", ncol = 1, strip.position = "left") +
+  labs(title = "Hurricane effects on stream chemistry", x = "Years") +
+  geom_vline(xintercept = 7201, linetype = "longdash")
 ```
 
 

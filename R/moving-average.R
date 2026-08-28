@@ -28,7 +28,7 @@ moving_average <- function(DataSet) {
       DataSet$Sample_Date < w2]
 
     # Use indexing to pull out the ion concentrations that fall inside the window
-    k_window <- DataSet$k[DataSet$Sample_Date >= w1 & DataSet$Sample_Date < w2]
+    k_window <- DataSet$K[DataSet$Sample_Date >= w1 & DataSet$Sample_Date < w2]
     no3n_window <- DataSet$`NO3-N`[DataSet$Sample_Date >= w1 & DataSet$Sample_Date < w2]
     mg_window <- DataSet$Mg[DataSet$Sample_Date >= w1 & DataSet$Sample_Date < w2]
     ca_window <- DataSet$Ca[DataSet$Sample_Date >= w1 & DataSet$Sample_Date < w2]

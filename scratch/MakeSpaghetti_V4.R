@@ -2,8 +2,6 @@ library(tidyverse)
 print("start")
 source("R/moving-average.R")
 
-# Store csv's into variables
-
 BQ1 <- read_csv(
   "data/QuebradaCuenca1-Bisley.csv",
   na = c("", "NA", "ND"))
@@ -16,27 +14,13 @@ BQ3 <- read_csv(
 PRM <- read_csv(
   "data/RioMameyesPuenteRoto.csv",
   na = c("", "NA", "ND"))
+print("end")
 
 class(BQ1$Sample_Date)
 glimpse(BQ1)
 colnames(BQ1)
 view(BQ1)
 
-
-# Filter dates to remove anything past mid 1994 (July 2, 1994) and before 1988 (Jan 1, 1988)
-
-BQ1 <- BQ1 |> 
-  filter(Sample_Date < "1994-7-2" & Sample_Date > "1987-12-31")
-BQ2 <- BQ2 |> 
-  filter(Sample_Date < "1994-7-2" & Sample_Date > "1987-12-31")
-BQ3 <- BQ3 |> 
-  filter(Sample_Date < "1994-7-2" & Sample_Date > "1987-12-31")
-PRM <- PRM |> 
-  filter(Sample_Date < "1994-7-2" & Sample_Date > "1987-12-31")
-
-view(BQ1)
-
-# Create 9 week moving average of each data set
 BQ1_Avg <- moving_average(BQ1)
 BQ2_Avg <- moving_average(BQ2)
 BQ3_Avg <- moving_average(BQ3)
@@ -95,10 +79,6 @@ write_csv(Final_Data, "output/clean_data.csv")
 
 # ggplot creation
 
-## September 19, 1989 is when Hurricane Hugo hit
-HHDate <- ymd("1989-9-19")
-unclass(HHDate) # you get 7201
-
 ggplot(
   data = Final_Data,
   mapping = aes(
@@ -110,5 +90,4 @@ ggplot(
 ) + 
   geom_line() +
   facet_wrap("Ion", scales = "free", ncol = 1, strip.position = "left") +
-  labs(title = "Hurricane effects on stream chemistry", x = "Years") +
-  geom_vline(xintercept = 7201, linetype = "longdash")
+  labs(title = "Hurricane effects on stream chemistry", x = "Years")
