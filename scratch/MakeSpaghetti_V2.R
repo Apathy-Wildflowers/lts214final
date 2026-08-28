@@ -61,6 +61,7 @@ glimpse(Final_Data)
 #Combine K,`NO3-N`, Mg, Ca, and `NH4-N` into single column called "Ion"
 
 BQ1 <- BQ1 |>
+  select(K, `NO3-N`, Mg, Ca, `NH4-N`) #selecting before you do anything else will make the data a little cleaner
   pivot_longer(
     cols = c(K, `NO3-N`, Mg, Ca, `NH4-N`),
     names_to = "Ion",
