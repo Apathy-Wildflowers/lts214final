@@ -39,3 +39,21 @@ BQ3_Avg <- BQ3_Avg |>
   mutate(Sample_ID = as.factor(Sample_ID))
 PRM_Avg <- PRM_Avg |> 
   mutate(Sample_ID = as.factor(Sample_ID))
+
+#Combine data
+Final_Data <- rbind(BQ1_Avg, BQ2_Avg, BQ3_Avg, PRM_Avg)
+
+#Combine K,`NO3-N`, Mg, Ca, and `NH4-N` into single column called "Ion"
+Final_Data <- Final_Data |>
+  pivot_longer(
+    cols = c(k_mgl, mg_mgl, no3n_mgl, ca_mgl, nh4n_mgl),
+    names_to = "Ion",
+    values_to = "Concentration"
+  )
+
+# Factorize Ion type
+Final_Data <- Final_Data |> 
+  mutate(Ion = as.factor(Ion))
+
+# Final data output
+write_csv(Final_Data, "output/clean_data.csv")
