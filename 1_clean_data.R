@@ -14,12 +14,6 @@ BQ3 <- read_csv(
 PRM <- read_csv(
   "data/RioMameyesPuenteRoto.csv",
   na = c("", "NA", "ND"))
-print("end")
-
-class(BQ1$Sample_Date)
-glimpse(BQ1)
-colnames(BQ1)
-view(BQ1)
 
 BQ1_Avg <- moving_average(BQ1)
 BQ2_Avg <- moving_average(BQ2)
@@ -36,9 +30,7 @@ BQ3_Avg <- BQ3_Avg |>
 PRM_Avg <- PRM_Avg |> 
   mutate(Sample_ID = "PRM")
 
-glimpse(PRM_Avg) # Checkup
 # Turn all the sites (Sample_ID's) into factors
-
 BQ1_Avg <- BQ1_Avg |> 
   mutate(Sample_ID = as.factor(Sample_ID))
 BQ2_Avg <- BQ2_Avg |> 
@@ -47,42 +39,3 @@ BQ3_Avg <- BQ3_Avg |>
   mutate(Sample_ID = as.factor(Sample_ID))
 PRM_Avg <- PRM_Avg |> 
   mutate(Sample_ID = as.factor(Sample_ID))
-
-distinct(BQ1_Avg, Sample_ID) #Checkup
-class(BQ1_Avg$Sample_ID) #Checkup
-
-#Combine data
-Final_Data <- rbind(BQ1_Avg, BQ2_Avg, BQ3_Avg, PRM_Avg)
-
-glimpse(Final_Data) # Checkup
-distinct(Final_Data, Sample_ID) #Checkup
-
-#Combine K,`NO3-N`, Mg, Ca, and `NH4-N` into single column called "Ion"
-
-Final_Data <- Final_Data |>
-  pivot_longer(
-    cols = c(k_mgl, mg_mgl, no3n_mgl, ca_mgl, nh4n_mgl),
-    names_to = "Ion",
-    values_to = "Concentration"
-  )
-
-# Factorize Ion type
-Final_Data <- Final_Data |> 
-  mutate(Ion = as.factor(Ion))
-
-view(Final_Data) # Checkup
-distinct(Final_Data, Ion) #Checkup
-
-# ggplot creation
-
-ggplot(
-  data = Final_Data,
-  mapping = aes(
-    x = window_start,
-    y = Concentration,
-    linetype = Sample_ID,
-    color = Sample_ID
-  )
-) + 
-  geom_line() +
-  facet_wrap("Ion", scales = "free", ncol = 1, strip.position = "left")

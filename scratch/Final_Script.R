@@ -73,6 +73,10 @@ Final_Data <- Final_Data |>
 view(Final_Data) # Checkup
 distinct(Final_Data, Ion) #Checkup
 
+# Clean data output
+write_csv(Final_Data, "output/clean_data.csv")
+
+
 # ggplot creation
 
 ggplot(
