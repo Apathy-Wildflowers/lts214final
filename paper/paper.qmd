@@ -1,9 +1,9 @@
 ---
-title: "paper"
+title: "Recreating Figure 3 from Schaefer et al. (2000)"
+author: Liam Sarmiento
 format: html
 editor: visual
 ---
-
 ### Background
 
 This project recreates a graph that shows chemical concentrations before and after Hurricane Hugo in 4 streams in Bisley, Puerto Rico.
@@ -12,19 +12,22 @@ More specifically, it recreates Figure 3. from "Effects of Hurricane Disturbance
 ### Data
 
 Data is taken from the Environmental Data Initiative [https://portal.edirepository.org/nis/mapbrowse?packageid=knb-lter-luq.20.4923064]
+The four stream data are taken from the folder "data/knb-lter-luq.20.4923064" and are as follows:
+-QuebradaCuenca1-Bisley.csv
+-QuebradaCuenca2-Bisley.csv
+-QuebradaCuenca3-Bisley.csv
+-RioMameyesPuenteRoto.csv
+
 
 ### Methods
-This creates the function moving-average.R, which takes the 9 week moving averages of the ion concentrations from the stream data. 
-This is placed inside the "R" folder that defines functions.
+The data is sorted into four csv's for each of the streams within R. The moving-average.R function takes a 9 week moving average of each ion concentration. Data has also been cut to include only dates from 1988 to mid 1994. ggplot2 was used to render the graph.
 
-
-This loads tidyverse functions, moving-average function, stores all 4 stream data into variables, and then turns the data all into moving averages.
+This loads tidyverse functions and pulls the already cleaned data.
 ```{r}
 #| output: false
 library(tidyverse)
 Final_Data <- read_csv("../output/clean_data.csv")
 ```
-
 
 ### Results
 #### ggplot creation
@@ -46,4 +49,8 @@ ggplot(
   geom_vline(xintercept = 7201, linetype = "longdash")
 ```
 
+## References
 
+https://doi.org/10.1017/s0266467400001358
+
+https://portal.edirepository.org/nis/mapbrowse?packageid=knb-lter-luq.20.4923064
