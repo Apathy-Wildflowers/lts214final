@@ -7,4 +7,5 @@ https://github.com/Apathy-Wildflowers/lts214final/issues/1
 https://github.com/Apathy-Wildflowers/lts214final/issues/3
 https://github.com/Apathy-Wildflowers/lts214final/issues/4
 
-
+Fixed merge conflict
+https://github.com/Apathy-Wildflowers/lts214final/commit/6b95177b4a8f63e30fc56c472e4f130320fd02b9
